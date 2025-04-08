@@ -2,6 +2,8 @@ pipeline {
     agent any
 
     environment {
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+        PATH = "${JAVA_HOME}/bin:/opt/sonar-scanner/bin:${env.PATH}"
         SONARQUBE_TOKEN = credentials('sonarqubetoken')  // ID of your secret token in Jenkins
     }
 
