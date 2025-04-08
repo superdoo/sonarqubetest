@@ -16,6 +16,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('MySonarQube') {
+                        sh ls -l
                         sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=. -Dsonar.login=$SONARQUBE_TOKEN'
                     }
                 }
