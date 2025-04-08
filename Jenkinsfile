@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-repo/your-project.git'  // Replace with your GitHub URL
+                git 'https://github.com/superdoo/sonarqubetest.git'  // Replace with your GitHub URL
             }
         }
 
