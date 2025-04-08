@@ -5,6 +5,7 @@ pipeline {
     }
     triggers {
         githubPush()  // This will trigger the pipeline on push to GitHub
+        
     }
     stages {
         stage('Checkout') {
