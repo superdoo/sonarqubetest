@@ -14,18 +14,29 @@ pipeline {
             }
         }
 
+        stage('Run Tests and Generate Coverage') {
+            steps {
+                script {
+                    // Running tests with coverage and generating coverage.xml
+                    sh """
+                    pytest --cov=src.app --cov-report=xml
+                    """
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
                     withSonarQubeEnv('MySonarQube') {
                         sh """
-                    export PATH=\$PATH:/opt/sonar-scanner/bin
-                    sonar-scanner \
-                      -Dsonar.projectKey=sonarqubetest \
-                      -Dsonar.sources=. \
-                      -Dsonar.host.url=http://localhost:9090 \
-                      -Dsonar.login=$SONARQUBE_TOKEN
-                """
+                        export PATH=\$PATH:/opt/sonar-scanner/bin
+                        sonar-scanner \
+                          -Dsonar.projectKey=sonarqubetest \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=http://localhost:9090 \
+                          -Dsonar.login=$SONARQUBE_TOKEN
+                        """
                     }
                 }
            }
