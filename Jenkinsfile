@@ -27,7 +27,7 @@ pipeline {
                     // Activate the virtual environment
                     // Linux-based activation command
                     sh """
-                        source ${venvDir}/bin/activate
+                         . ${venvDir}/bin/activate
                     """
                     }
                 }
