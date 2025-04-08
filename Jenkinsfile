@@ -1,30 +1,16 @@
 pipeline {
     agent any
+
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqubetoken')
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
+        PATH = "${JAVA_HOME}/bin:/opt/sonar-scanner/bin:${env.PATH}"
+        SONARQUBE_TOKEN = credentials('sonarqubetoken')  // ID of your secret token in Jenkins
     }
+
     stages {
-       stage('SonarQube initial Analysis') {
-    steps {
-        script {
-            echo "Current PATH: ${env.PATH}"
-            echo "Sonar scanner home: ${env.SONAR_SCANNER_HOME}"
-        }
-        withSonarQubeEnv('MySonarQube') {
-            sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=src'
-        }
-    }
-}
-
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building the project...'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
+                git url: 'https://github.com/superdoo/sonarqubetest.git', branch: 'main'
             }
         }
 
@@ -32,24 +18,26 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('MySonarQube') {
-                        sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=src -Dsonar.host.url=http://localhost:9090 -Dsonar.token=$SONARQUBE_TOKEN'
+                        sh """
+                    export PATH=\$PATH:/opt/sonar-scanner/bin
+                    sonar-scanner \
+                      -Dsonar.projectKey=sonarqubetest \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=http://localhost:9090 \
+                      -Dsonar.login=$SONARQUBE_TOKEN
+                """
                     }
                 }
-            }
-        }
-
-        stage('Post Analysis') {
-            steps {
-                echo 'SonarQube analysis completed!'
-            }
+           }
         }
     }
+
     post {
         success {
-            echo 'Build and analysis completed successfully!'
+            echo '✅ SonarQube analysis completed successfully!'
         }
         failure {
-            echo 'There was an error in the build or analysis.'
+            echo '❌ SonarQube analysis failed.'
         }
     }
 }
