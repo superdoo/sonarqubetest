@@ -29,7 +29,7 @@ pipeline {
                           sonar-scanner \
                             -Dsonar.projectKey=sonarqubetest \
                             -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.host.url=http://localhost:9090 \
                             -Dsonar.login=$SONARQUBE_TOKEN \
                             -X  # Enable debug logging
                         '''
