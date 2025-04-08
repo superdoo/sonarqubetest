@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/superdoo/sonarqubetest.git'
+              //  git 'https://github.com/superdoo/sonarqubetest.git'
             }
         }
 
