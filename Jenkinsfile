@@ -9,14 +9,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Pull code from GitHub
                 git 'https://github.com/sonarqubetest.git'  // Replace with your GitHub repository URL
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('MySonarQube') {
-                        sh 'mvn clean install sonar:sonar -Dsonar.login=$SONARQUBE_TOKEN'
+                    // Run SonarQube analysis with the correct project key
+                    withSonarQubeEnv('MySonarQube') {  // Ensure 'MySonarQube' matches the name of your SonarQube server in Jenkins
+                        // Run Maven with SonarQube analysis using the correct project key
+                        sh 'mvn clean install sonar:sonar -Dsonar.projectKey=sonarqubetest -Dsonar.login=$SONARQUBE_TOKEN'
                     }
                 }
             }
