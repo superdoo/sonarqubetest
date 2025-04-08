@@ -4,9 +4,17 @@ pipeline {
         SONARQUBE_TOKEN = credentials('sonarqubetoken')
     }
     stages {
-        // Already checked out automatically by Jenkins
-        // So skip this:
-        // stage('Checkout') { steps { git 'https://github.com/superdoo/sonarqubetest.git' } }
+       stage('SonarQube Analysis') {
+    steps {
+        script {
+            echo "Current PATH: ${env.PATH}"
+            echo "Sonar scanner home: ${env.SONAR_SCANNER_HOME}"
+        }
+        withSonarQubeEnv('MySonarQube') {
+            sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=src'
+        }
+    }
+}
 
         stage('Build') {
             steps {
