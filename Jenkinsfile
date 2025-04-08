@@ -4,16 +4,16 @@ pipeline {
         SONARQUBE_TOKEN = credentials('sonarqubetoken') // Assuming you store your SonarQube token in Jenkins' credentials
     }
     stages {
-        stage('Checkout') {
-            steps {
+       // stage('Checkout') {
+        //    steps {
               //  git 'https://github.com/superdoo/sonarqubetest.git'
-            }
-        }
+          //  }
+      //  }
 
         stage('Build') {
             steps {
                 script {
-                    // Build steps go here, e.g., compile the code or install dependencies
+                    Build steps go here, e.g., compile the code or install dependencies
                     echo 'Building the project...'
                 }
             }
