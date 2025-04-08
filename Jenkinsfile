@@ -24,6 +24,8 @@ pipeline {
                       -Dsonar.host.url=http://localhost:9090 \
                       -Dsonar.login=$SONARQUBE_TOKEN
                 """
+                    }
+                }
            }
         }
     }
