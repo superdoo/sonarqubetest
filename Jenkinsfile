@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqubetest')  // ID of your secret token in Jenkins
+        SONARQUBE_TOKEN = credentials('sonarqubetoken')  // ID of your secret token in Jenkins
     }
 
     stages {
