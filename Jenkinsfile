@@ -4,7 +4,7 @@ pipeline {
         SONARQUBE_TOKEN = credentials('sonarqubetoken')
     }
     stages {
-       stage('SonarQube Analysis') {
+       stage('SonarQube initial Analysis') {
     steps {
         script {
             echo "Current PATH: ${env.PATH}"
