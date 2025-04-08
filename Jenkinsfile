@@ -5,7 +5,6 @@ pipeline {
     }
     triggers {
         githubPush()  // This will trigger the pipeline on push to GitHub
-        
     }
     stages {
         stage('Checkout') {
@@ -26,11 +25,13 @@ pipeline {
                 script {
                     withSonarQubeEnv('MySonarQube') {  // Ensure 'MySonarQube' matches the name of your SonarQube server in Jenkins
                         sh '''
+                          echo "Running SonarQube analysis..."
                           sonar-scanner \
                             -Dsonar.projectKey=sonarqubetest \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=$SONARQUBE_TOKEN
+                            -Dsonar.login=$SONARQUBE_TOKEN \
+                            -X  # Enable debug logging
                         '''
                     }
                 }
