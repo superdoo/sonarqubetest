@@ -17,14 +17,14 @@ pipeline {
                 script {
                     withSonarQubeEnv('MySonarQube') {
                         sh """
-                            sonar-scanner \
-                            -Dsonar.projectKey=sonarqubetest \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9090 \
-                            -Dsonar.login=$SONARQUBE_TOKEN
-                        """
-                    }
-                }
+                    export PATH=\$PATH:/opt/sonar-scanner/bin
+                    sonar-scanner \
+                      -Dsonar.projectKey=sonarqubetest \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=http://localhost:9090 \
+                      -Dsonar.login=$SONARQUBE_TOKEN
+                """
+            }
             }
         }
     }
