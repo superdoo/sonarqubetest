@@ -14,6 +14,15 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install pytest in the environment
+                    sh 'pip install pytest pytest-cov'
+                }
+            }
+        }
+
         stage('Run Tests and Generate Coverage') {
             steps {
                 script {
