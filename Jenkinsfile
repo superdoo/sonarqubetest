@@ -20,10 +20,10 @@ pipeline {
                     // Create virtual environment
                     sh 'python3 -m venv venv'
                     
-                    // Ensure proper permissions for virtual environment (if sudo works)
-                    sh 'sudo chown -R jenkins:jenkins venv'  // Only needed if you want to use sudo
+                    // Fix permissions on the virtual environment directory (in case it needs it)
+                    sh 'sudo chown -R jenkins:jenkins venv'  // Only needed if permissions are incorrect
                     
-                    // Use bash to activate the virtual environment
+                    // Use bash to activate the virtual environment and install dependencies
                     sh 'bash -c "source venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov"'
                 }
             }
