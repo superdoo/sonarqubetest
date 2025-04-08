@@ -1,12 +1,14 @@
 pipeline {
- agent any
+    agent any
+
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqubetest')  // Replace with your token name
+        SONARQUBE_TOKEN = credentials('sonarqubetest')  // ID of your secret token in Jenkins
     }
-     stages {
+
+    stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/superdoo/sonarqubetest.git'  // Replace with your GitHub URL
+                git url: 'https://github.com/superdoo/sonarqubetest.git', branch: 'main'
             }
         }
 
@@ -14,19 +16,25 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('MySonarQube') {
-                     sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=. -Dsonar.login=$SONARQUBE_TOKEN'
+                        sh """
+                            sonar-scanner \
+                            -Dsonar.projectKey=sonarqubetest \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=http://localhost:9090 \
+                            -Dsonar.login=$SONARQUBE_TOKEN
+                        """
                     }
                 }
             }
         }
-    } 
+    }
 
     post {
         success {
-            echo 'SonarQube analysis completed successfully!'
+            echo '✅ SonarQube analysis completed successfully!'
         }
         failure {
-            echo 'SonarQube analysis failed.'
+            echo '❌ SonarQube analysis failed.'
         }
     }
 }
