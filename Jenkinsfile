@@ -17,8 +17,15 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Install pytest in the environment
-                    sh 'pip install pytest pytest-cov'
+                    // Create a virtual environment
+                    sh 'python3 -m venv venv'
+                    
+                    // Activate the virtual environment and install dependencies
+                    sh '''
+                    source venv/bin/activate
+                    pip install --upgrade pip
+                    pip install pytest pytest-cov
+                    '''
                 }
             }
         }
@@ -27,9 +34,10 @@ pipeline {
             steps {
                 script {
                     // Running tests with coverage and generating coverage.xml
-                    sh """
+                    sh '''
+                    source venv/bin/activate
                     pytest --cov=src.app --cov-report=xml
-                    """
+                    '''
                 }
             }
         }
