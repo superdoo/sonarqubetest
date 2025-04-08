@@ -1,5 +1,4 @@
 pipeline {
-    
     agent any
 
     environment {
@@ -21,11 +20,11 @@ pipeline {
                     // Create virtual environment
                     sh 'python3 -m venv venv'
                     
-                    // Fix permissions on the virtual environment directory (in case it needs it)
-                    sh 'sudo chown -R jenkins:jenkins venv'  // Only needed if permissions are incorrect
-                    
+                    // Fix permissions on the virtual environment directory (if needed)
+                    sh 'sudo chown -R jenkins:jenkins venv'
+
                     // Use bash to activate the virtual environment and install dependencies
-                    sh 'bash -c "source venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov"'
+                    sh '''bash -c "source \"$(pwd)/venv/bin/activate\" && pip install --upgrade pip && pip install pytest pytest-cov"'''
                 }
             }
         }
@@ -34,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Run tests with coverage inside the virtual environment
-                    sh 'bash -c "source venv/bin/activate && pytest --cov=src.app --cov-report=xml"'
+                    sh '''bash -c "source \"$(pwd)/venv/bin/activate\" && pytest --cov=src.app --cov-report=xml"'''
                 }
             }
         }
