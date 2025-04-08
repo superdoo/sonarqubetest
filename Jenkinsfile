@@ -1,43 +1,60 @@
 pipeline {
     agent any
-
     environment {
-        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
-        PATH = "${JAVA_HOME}/bin:/opt/sonar-scanner/bin:${env.PATH}"
-        SONARQUBE_TOKEN = credentials('sonarqubetoken')  // ID of your secret token in Jenkins
+        SONARQUBE_TOKEN = credentials('sonarqubetoken') // Assuming you store your SonarQube token in Jenkins' credentials
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/superdoo/sonarqubetest.git', branch: 'main'
+                git 'https://github.com/superdoo/sonarqubetest.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    // Build steps go here, e.g., compile the code or install dependencies
+                    echo 'Building the project...'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // Example for running Python tests with pytest (adjust according to your project)
+                    echo 'Running tests...'
+                    sh 'pytest --maxfail=1 --disable-warnings -q'
+                }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 script {
+                    // Running the SonarQube analysis with token authentication
                     withSonarQubeEnv('MySonarQube') {
-                        sh """
-                    export PATH=\$PATH:/opt/sonar-scanner/bin
-                    sonar-scanner \
-                      -Dsonar.projectKey=sonarqubetest \
-                      -Dsonar.sources=. \
-                      -Dsonar.host.url=http://localhost:9090 \
-                      -Dsonar.login=$SONARQUBE_TOKEN
-                """
+                        sh 'sonar-scanner -Dsonar.projectKey=sonarqubetest -Dsonar.sources=src -Dsonar.host.url=http://localhost:9090 -Dsonar.token=$SONARQUBE_TOKEN'
                     }
                 }
-           }
+            }
+        }
+
+        stage('Post Analysis') {
+            steps {
+                script {
+                    // Optionally add logic to fetch and display results or handle post-analysis
+                    echo 'SonarQube analysis completed!'
+                }
+            }
         }
     }
-
     post {
         success {
-            echo '✅ SonarQube analysis completed successfully!'
+            echo 'Build and analysis completed successfully!'
         }
         failure {
-            echo '❌ SonarQube analysis failed.'
+            echo 'There was an error in the build or analysis.'
         }
     }
 }
