@@ -11,7 +11,7 @@ pipeline {
                 git 'https://github.com/superdoo/sonarqubetest.git'  // Replace with your GitHub URL
             }
         }
-
+llljjj 
         stage('SonarQube Analysis') {
             steps {
                 script {
