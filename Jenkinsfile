@@ -23,11 +23,8 @@ pipeline {
                     // Ensure proper permissions for virtual environment (if sudo works)
                     sh 'sudo chown -R jenkins:jenkins venv'  // Only needed if you want to use sudo
                     
-                    // Alternatively, set permissions without sudo (less secure)
-                    // sh 'chmod -R 777 venv'  // Use this if you do not want to configure sudoers file
-                    
-                    // Activate the virtual environment and install dependencies
-                    sh 'source venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov'
+                    // Use bash to activate the virtual environment
+                    sh 'bash -c "source venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov"'
                 }
             }
         }
@@ -36,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Run tests with coverage inside the virtual environment
-                    sh 'source venv/bin/activate && pytest --cov=src.app --cov-report=xml'
+                    sh 'bash -c "source venv/bin/activate && pytest --cov=src.app --cov-report=xml"'
                 }
             }
         }
