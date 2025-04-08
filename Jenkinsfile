@@ -14,24 +14,26 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Virtual Environment') {
             steps {
                 script {
-                    // Create virtual environment
-                    sh 'python3 -m venv venv'
-                    sh  '/home/mbarreras/sonarqubetest/venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov'                
-                }
-            }
-        }
+                    // Define the venv directory
+                    def venvDir = 'venv'
 
-        stage('Run Tests and Generate Coverage') {
-            steps {
-                script {
-                    // Run tests with coverage inside the virtual environment
-                    sh 'pytest --cov=src.app --cov-report=xml'
+            // Create the virtual environment (only if it doesn't exist)
+                    sh """
+                    python3 -m venv ${venvDir}
+                    """
+                    // Activate the virtual environment
+                    // Linux-based activation command
+                    sh """
+                        source ${venvDir}/bin/activate
+                    """
+                    }
                 }
             }
-        }
+
+
 
         stage('SonarQube Analysis') {
             steps {
