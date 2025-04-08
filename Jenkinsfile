@@ -24,7 +24,7 @@ pipeline {
                     sh 'sudo chown -R jenkins:jenkins venv'
 
                     // Use bash to activate the virtual environment and install dependencies
-                    sh '''bash -i -c "source /var/lib/jenkins/workspace/sonarqubetest/venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov"'''
+                    sh '''bash -i -c "source /var/lib/jenkins/workspace/sonartesting/venv/bin/activate && pip install --upgrade pip && pip install pytest pytest-cov"'''
 
                 }
             }
