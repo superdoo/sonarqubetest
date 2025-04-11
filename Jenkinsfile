@@ -44,6 +44,7 @@ pipeline {
                         sonar-scanner \
                           -Dsonar.projectKey=sonarqubetest \
                           -Dsonar.sources=. \
+                          -Dsonar.exclusions=venv/**,tests/**,**/*.pyc \
                           -Dsonar.host.url=http://localhost:9090 \
                           -Dsonar.login=$SONARQUBE_TOKEN
                         """
